@@ -85,7 +85,7 @@ class Entity
         return new static(self::$client->get("{$this->uri}/{$id}"));
     }
 
-    public function __callStatic($method, $parameters)
+    public static function __callStatic($method, $parameters)
     {
         //		if(method_exists($this, $name)) {
 //			return $this->{$name}($params);
