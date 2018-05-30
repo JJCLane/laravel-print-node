@@ -3,6 +3,10 @@
 namespace Infernobass7\PrintNode;
 
 use Illuminate\Support\Facades\Storage;
+use Infernobass7\PrintNode\Exceptions\InvalidCredentialsException;
+use Infernobass7\PrintNode\Exceptions\InvalidPrinterSettingUsedException;
+use Infernobass7\PrintNode\Exceptions\PrinterNotDefinedException;
+use Infernobass7\PrintNode\Exceptions\PrinterNotOnlineException;
 
 class PrintJob extends Entity
 {
@@ -13,6 +17,13 @@ class PrintJob extends Entity
     ];
     protected $newPrintJob;
 
+    /**
+     * Create a Print Job
+     *
+     * @param array $attributes
+     * @param null $printer
+     * @throws PrinterNotOnlineException
+     */
     public function __construct($attributes = [], $printer = null)
     {
         parent::__construct($attributes);
@@ -28,6 +39,15 @@ class PrintJob extends Entity
         }
     }
 
+    /**
+     * Print current Print Job
+     *
+     * @param null $printer
+     * @return mixed
+     * @throws PrinterNotDefinedException
+     * @throws PrinterNotOnlineException
+     * @throws InvalidPrinterSettingUsedException
+     */
     public function print($printer = null)
     {
         if ($printer) {
@@ -37,12 +57,19 @@ class PrintJob extends Entity
         if ($this->printer) {
             $this->checkSettings();
 
-            return  $this->client->post("{$this->uri}", ['json' => $this->toArray()]);
+            return $this->client->post("{$this->uri}", ['json' => $this->toArray()]);
         }
 
         throw new PrinterNotDefinedException();
     }
 
+    /**
+     * @param $path
+     * @param string $disk
+     * @param bool $raw
+     * @return $this
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function setFile($path, $disk = 'local', $raw = false)
     {
         $this->contentType = $raw ? 'raw_base64' : 'pdf_base64';
@@ -51,6 +78,13 @@ class PrintJob extends Entity
         return $this;
     }
 
+    /**
+     * @param $uri
+     * @param null $credentials
+     * @param bool $raw
+     * @return $this
+     * @throws InvalidCredentialsException
+     */
     public function setUri($uri, $credentials = null, $raw = false)
     {
         $this->contentType = $raw ? 'raw_uri' : 'pdf_uri';
@@ -107,6 +141,12 @@ class PrintJob extends Entity
         return $this;
     }
 
+    /**
+     * @param $credentials
+     * @param bool $basic
+     * @return $this
+     * @throws InvalidCredentialsException
+     */
     public function setAuthentication($credentials, $basic = true)
     {
         if (! array_key_exists('username', $credentials) || ! array_key_exists('password', $credentials)) {
@@ -124,13 +164,22 @@ class PrintJob extends Entity
         return $this;
     }
 
+    /**
+     * @param $printer
+     * @return $this
+     * @throws PrinterNotOnlineException
+     */
     public function setPrinter($printer)
     {
         if ($printer instanceof Printer) {
             $this->printer = $printer;
             $printer = $printer->id;
         } else {
-            $this->printer = Printer::get($printer);
+            $this->printer = app(Printer::class)->get($printer);
+        }
+
+        if (!$this->printer->isOnline()) {
+            throw new PrinterNotOnlineException();
         }
 
         $this->setAttribute('printerId', $printer);
@@ -138,6 +187,10 @@ class PrintJob extends Entity
         return $this;
     }
 
+    /**
+     * @throws InvalidPrinterSettingUsedException
+     * @throws PrinterNotOnlineException
+     */
     public function checkSettings()
     {
         if (array_key_exists('copies', $this->options)) {
@@ -177,5 +230,14 @@ class PrintJob extends Entity
                 $this->setOptions(['color' => false]);
             }
         }
+    }
+
+    public function getPrinterName()
+    {
+        if (!$this->printer) {
+            return null;
+        }
+
+        return $this->printer->name;
     }
 }

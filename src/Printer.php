@@ -1,6 +1,6 @@
 <?php
 
-namespace Infernobass7\PrintNode;
+namespace Infernobass7\PrintNode\Exceptions;
 
 class Printer extends Entity
 {
@@ -8,6 +8,11 @@ class Printer extends Entity
     protected $foreignObjects = [
 //		'computer' => Computer::class
     ];
+
+    public function isOnline()
+    {
+        return $this->state == 'online';
+    }
 
     public function print(PrintJob $job)
     {

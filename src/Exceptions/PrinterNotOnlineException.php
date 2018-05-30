@@ -4,7 +4,7 @@ namespace Infernobass7\PrintNode\Exceptions;
 
 use Exception;
 
-class PrinterNotDefinedException extends Exception
+class PrinterNotOnlineException extends Exception
 {
     /**
      * Create a new authentication exception.
@@ -13,7 +13,7 @@ class PrinterNotDefinedException extends Exception
      *
      * @return void
      */
-    public function __construct($message = 'Printer was not defined.')
+    public function __construct($message = 'Printer is not online.')
     {
         parent::__construct($message);
     }

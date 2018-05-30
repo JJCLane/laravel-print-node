@@ -1,6 +1,6 @@
 <?php
 
-namespace Infernobass7\PrintNode;
+namespace Infernobass7\PrintNode\Exceptions;
 
 use Exception;
 
