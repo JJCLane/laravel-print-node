@@ -1,6 +1,6 @@
 <?php
 
-namespace Infernobass7\PrintNode\Exceptions;
+namespace Infernobass7\PrintNode;
 
 class Printer extends Entity
 {
