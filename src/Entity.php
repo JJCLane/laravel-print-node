@@ -23,9 +23,11 @@ class Entity
             return self::$client;
         }
 
-        if ($this->has($key)) {
-            return $this->attributes[$key];
+        if (!$this->has($key)) {
+            return null;
         }
+
+        return $this->attributes[$key];
     }
 
     public function __set($key, $value)
