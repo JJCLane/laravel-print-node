@@ -84,7 +84,9 @@ class Entity
 
     protected function get($id)
     {
-        return new static(self::$client->get("{$this->uri}/{$id}")[0]);
+        $response = self::$client->get("{$this->uri}/{$id}");
+
+        return new static(empty($response) ? [] : $response[0]);
     }
 
     public static function __callStatic($method, $parameters)
