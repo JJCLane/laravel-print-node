@@ -1,11 +1,11 @@
 {
-    "name": "infernobass7/laravel-print-node",
+    "name": "jjclane/laravel-print-node",
     "description": "Print using PrintNode in Laravel. http://www.printnode.com",
     "type": "library",
     "authors": [
         {
-            "name": "Michael Deck",
-            "email": "michael.e.deck@outlook.com"
+            "name": "Jordan Lane",
+            "email": "contact@jordanlane.me"
         }
     ],
     "require": {

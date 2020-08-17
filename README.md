@@ -7,7 +7,7 @@ This package has been written in Laravel 5.4 but should support previous version
 # Installation
 You can pull this package in through Composer.
 ```
-composer require infernobass7/laravel-print-node
+composer require jjclane/laravel-print-node
 ```
 You will need to add the following lines to `config/app.php`
 ```php
