@@ -13,8 +13,8 @@
         "PrintNode/printnode-php": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Infernobass7\\PrintNode": "src/"
+        "psr-4": {
+            "Infernobass7\\PrintNode\\": "src/"
         }
     },
     "minimum-stability": "dev"

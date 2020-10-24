@@ -6,7 +6,7 @@ class Computer extends Entity
 {
     protected $uri = 'computers';
     protected $foreignObjects = [
-		'printer' => Printer::class
+        'printer' => Printer::class
     ];
 
     public function getPrinters()

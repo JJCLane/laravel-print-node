@@ -92,8 +92,8 @@ class Entity
     public static function __callStatic($method, $parameters)
     {
         //		if(method_exists($this, $name)) {
-//			return $this->{$name}($params);
-//		}
+        //			return $this->{$name}($params);
+        //		}
         return (new static())->$method(...$parameters);
     }
 }
