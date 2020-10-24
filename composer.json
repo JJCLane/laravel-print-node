@@ -10,7 +10,7 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^6.2",
-        "PrintNode/printnode-php": "dev-master"
+        "printnode/printnode-php": "dev-master"
     },
     "autoload": {
         "psr-4": {
